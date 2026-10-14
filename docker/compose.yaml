@@ -1,6 +1,8 @@
 # Environnement de développement complet : base, mails, backend, frontend.
-# Depuis la racine du dépôt :  docker compose -f docker/compose.yaml up -d --build
+# Depuis la racine du dépôt :  docker compose up -d --build  (via le compose.yaml racine qui inclut ce fichier)
 # Documentation : docker/README.md
+# Ce nom doit rester identique à celui du compose.yaml racine : sinon, les deux façons de lancer
+# viseraient deux projets différents (conteneurs en double, conflits de ports).
 name: formationclaude
 
 services:

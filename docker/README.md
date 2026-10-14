@@ -3,8 +3,10 @@
 Tout l'environnement de développement (base de données, mails, backend, frontend) se lance avec **une seule commande**, depuis la racine du dépôt :
 
 ```powershell
-docker compose -f docker/compose.yaml up -d --build
+docker compose up -d --build
 ```
+
+Le `compose.yaml` de la racine se contente d'inclure [compose.yaml](compose.yaml) de ce dossier. Toutes les commandes `docker compose …` ci-dessous se lancent donc depuis la racine, `backend/` ou `frontend/`. Dans ce dossier `docker/`, c'est ce fichier qui est lu directement : on obtient la même stack, puisque les deux fichiers portent le même `name:`. L'`include` demande Docker Compose 2.20 ou plus. Avec une version plus ancienne, utiliser la forme longue `docker compose -f docker/compose.yaml …`, qui fonctionne partout.
 
 Prérequis : Docker Desktop démarré. Les ports 8000, 5173, 5433, 8025 et 1025 doivent être libres ; arrêter au besoin un `symfony serve` ou un `npm run dev` lancé à la main.
 
@@ -37,8 +39,8 @@ Pour les recevoir dans une **vraie boîte** (ici Gmail, pour la formation) :
    ```
 3. Redémarrer le backend, puis envoyer un email de test :
    ```powershell
-   docker compose -f docker/compose.yaml restart backend
-   docker compose -f docker/compose.yaml exec backend php bin/console mailer:test moncompte@gmail.com
+   docker compose restart backend
+   docker compose exec backend php bin/console mailer:test moncompte@gmail.com
    ```
    Si l'email n'apparaît pas, regarder aussi dans les spams.
 
@@ -60,25 +62,25 @@ Le frontend fait `npm install` puis lance Vite. Son `node_modules` vit dans un v
 
 ```powershell
 # État des services
-docker compose -f docker/compose.yaml ps
+docker compose ps
 
 # Logs (suivre le backend)
-docker compose -f docker/compose.yaml logs -f backend
+docker compose logs -f backend
 
 # Commande Symfony dans le conteneur
-docker compose -f docker/compose.yaml exec backend php bin/console debug:router
+docker compose exec backend php bin/console debug:router
 
 # Tests backend (SQLite, ils ne touchent jamais la base PostgreSQL et n'envoient aucun email)
-docker compose -f docker/compose.yaml exec backend php bin/phpunit
+docker compose exec backend php bin/phpunit
 
 # Nouvelle migration après modification d'une entité
-docker compose -f docker/compose.yaml exec backend php bin/console doctrine:migrations:diff
+docker compose exec backend php bin/console doctrine:migrations:diff
 
 # Arrêter
-docker compose -f docker/compose.yaml down
+docker compose down
 
 # Tout remettre à zéro (supprime la base, vendor et node_modules des conteneurs)
-docker compose -f docker/compose.yaml down -v
+docker compose down -v
 ```
 
 ## Fichiers

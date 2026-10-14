@@ -1,0 +1,12 @@
+nelmio_cors:
+    defaults:
+        origin_regex: false
+        allow_origin: ['%env(FRONTEND_URL)%']
+        # Nécessaire pour que le navigateur envoie le cookie refresh_token
+        allow_credentials: true
+        allow_methods: ['GET', 'OPTIONS', 'POST']
+        allow_headers: ['Content-Type', 'Authorization']
+        expose_headers: ['Retry-After']
+        max_age: 3600
+    paths:
+        '^/api/': null

@@ -1,0 +1,81 @@
+# Environnement de développement complet : base, mails, backend, frontend.
+# Depuis la racine du dépôt :  docker compose -f docker/compose.yaml up -d --build
+# Documentation : docker/README.md
+name: formationclaude
+
+services:
+  database:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: app
+      POSTGRES_USER: app
+      # Identifiants de développement local uniquement
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-app}
+    volumes:
+      - database_data:/var/lib/postgresql/data
+    ports:
+      # 5433 côté hôte : 5432 est souvent pris par un PostgreSQL installé sur la machine
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-d", "app", "-U", "app"]
+      interval: 3s
+      timeout: 5s
+      retries: 20
+
+  mailpit:
+    image: axllent/mailpit:v1.27
+    ports:
+      - "8025:8025" # interface web
+      - "1025:1025" # SMTP
+
+  backend:
+    build: ./backend
+    environment:
+      DATABASE_URL: "postgresql://app:${POSTGRES_PASSWORD:-app}@database:5432/app?serverVersion=16&charset=utf8"
+      # MAILER_DSN n'est volontairement pas défini ici : une variable d'environnement passerait
+      # avant backend/.env.local. Par défaut, backend/.env envoie vers Mailpit ; pour un vrai
+      # service (Gmail…), définir MAILER_DSN dans backend/.env.local (cf. docker/README.md)
+      FRONTEND_URL: http://localhost:5173
+    volumes:
+      - ../backend:/app
+      # vendor et var restent dans le conteneur : plus rapide qu'un montage Windows
+      - backend_vendor:/app/vendor
+      - backend_var:/app/var
+    ports:
+      - "8000:8000"
+    depends_on:
+      database:
+        condition: service_healthy
+      mailpit:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "php", "-r", "exit(@file_get_contents('http://127.0.0.1:8000/api/docs.jsonopenapi') === false ? 1 : 0);"]
+      interval: 5s
+      timeout: 5s
+      retries: 60
+      start_period: 30s
+
+  frontend:
+    image: node:22-alpine
+    working_dir: /app
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0 --port 5173 --strictPort"
+    environment:
+      # localhost (et non 127.0.0.1) : même site que le front, requis par le cookie SameSite=Strict
+      VITE_API_URL: http://localhost:8000/api
+      # Les modifications faites sous Windows ne sont pas notifiées dans le conteneur
+      VITE_USE_POLLING: "true"
+    volumes:
+      - ../frontend:/app
+      # node_modules Linux, distinct de celui de Windows (binaires natifs différents)
+      - frontend_node_modules:/app/node_modules
+    ports:
+      - "5173:5173"
+    depends_on:
+      backend:
+        condition: service_healthy
+
+volumes:
+  database_data:
+  backend_vendor:
+  backend_var:
+  frontend_node_modules:

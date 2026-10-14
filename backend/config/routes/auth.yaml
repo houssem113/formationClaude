@@ -1,0 +1,10 @@
+# Routes interceptées par le pare-feu "auth" (json_login et refresh_jwt).
+# Le contrôleur ne répond que si l'authentificateur ignore la requête (corps non JSON).
+api_login:
+    path: /api/auth/login
+    methods: [POST]
+    controller: App\Controller\AuthController::invalidLoginRequest
+
+api_refresh:
+    path: /api/auth/refresh
+    methods: [POST]

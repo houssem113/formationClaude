@@ -1,0 +1,16 @@
+gesdinet_jwt_refresh_token:
+    refresh_token_class: App\Entity\RefreshToken
+    ttl: 2592000
+    # Rotation : chaque refresh supprime l'ancien token et en émet un nouveau
+    single_use: true
+    token_parameter_name: refresh_token
+    # Seul le hash du refresh token est stocké en base
+    hash_tokens:
+        enabled: true
+    cookie:
+        enabled: true
+        same_site: strict
+        path: /api/auth
+        http_only: true
+        secure: true
+        remove_token_from_body: true

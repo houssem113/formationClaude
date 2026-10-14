@@ -1,0 +1,11 @@
+framework:
+    rate_limiter:
+        # Limites par IP (cf. docs/api-contract.md) ; celle du login est dans security.yaml
+        register:
+            policy: fixed_window
+            limit: 3
+            interval: '1 minute'
+        resend_confirmation:
+            policy: fixed_window
+            limit: 3
+            interval: '1 minute'

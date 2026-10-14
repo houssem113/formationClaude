@@ -1,0 +1,10 @@
+api_platform:
+    title: formationClaude API
+    description: |
+        Authentification : inscription avec email de confirmation, login JWT, refresh token en cookie httpOnly, logout.
+        Contrat de référence : docs/api-contract.md.
+    version: 1.0.0
+    defaults:
+        stateless: true
+        cache_headers:
+            vary: ['Content-Type', 'Authorization', 'Origin']

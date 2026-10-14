@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(composer *)",
+      "Bash(php bin/console *)",
+      "Bash(php bin/phpunit)",
+      "Bash(php bin/phpunit *)",
+      "Bash(npm run lint)",
+      "Bash(npm run lint *)",
+      "Bash(npm run build)",
+      "Bash(npm run build *)",
+      "Bash(npm run test)",
+      "Bash(npm run test *)",
+      "PowerShell(composer *)",
+      "PowerShell(php bin/console *)",
+      "PowerShell(php bin/phpunit)",
+      "PowerShell(php bin/phpunit *)",
+      "PowerShell(npm run lint)",
+      "PowerShell(npm run lint *)",
+      "PowerShell(npm run build)",
+      "PowerShell(npm run build *)",
+      "PowerShell(npm run test)",
+      "PowerShell(npm run test *)"
+    ],
+    "ask": [
+      "Bash(git push)",
+      "Bash(git push *)",
+      "Bash(composer require *)",
+      "Bash(composer install)",
+      "Bash(composer install *)",
+      "Bash(composer update)",
+      "Bash(composer update *)",
+      "Bash(npm install)",
+      "Bash(npm install *)",
+      "Bash(npm i)",
+      "Bash(npm i *)",
+      "Bash(npm ci)",
+      "Bash(npm ci *)",
+      "Bash(npm add *)",
+      "Bash(npx *)",
+      "Bash(yarn add *)",
+      "Bash(pnpm add *)",
+      "Bash(pip install *)",
+      "Bash(winget install *)",
+      "Bash(choco install *)",
+      "PowerShell(git push)",
+      "PowerShell(git push *)",
+      "PowerShell(composer require *)",
+      "PowerShell(composer install)",
+      "PowerShell(composer install *)",
+      "PowerShell(composer update)",
+      "PowerShell(composer update *)",
+      "PowerShell(npm install)",
+      "PowerShell(npm install *)",
+      "PowerShell(npm i)",
+      "PowerShell(npm i *)",
+      "PowerShell(npm ci)",
+      "PowerShell(npm ci *)",
+      "PowerShell(npm add *)",
+      "PowerShell(npx *)",
+      "PowerShell(yarn add *)",
+      "PowerShell(pnpm add *)",
+      "PowerShell(pip install *)",
+      "PowerShell(winget install *)",
+      "PowerShell(choco install *)",
+      "PowerShell(Install-Module *)",
+      "PowerShell(Install-Package *)"
+    ],
+    "deny": [
+      "Read(**/.env.local)",
+      "Read(**/*.pem)"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "shell": "bash",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/verify-on-stop.mjs\"",
+            "timeout": 600,
+            "statusMessage": "Vérification backend/frontend (phpunit, lint, build)…"
+          }
+        ]
+      }
+    ]
+  }
+}

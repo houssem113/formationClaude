@@ -1,0 +1,9 @@
+lexik_jwt_authentication:
+    secret_key: '%env(resolve:JWT_SECRET_KEY)%'
+    public_key: '%env(resolve:JWT_PUBLIC_KEY)%'
+    pass_phrase: '%env(JWT_PASSPHRASE)%'
+    # Access token court : 15 minutes (cf. docs/api-contract.md)
+    token_ttl: 900
+    # La doc OpenAPI du login est fournie par App\OpenApi\AuthOpenApiFactory
+    api_platform:
+        enabled: false

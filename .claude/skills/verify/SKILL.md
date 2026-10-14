@@ -9,7 +9,7 @@ Ce skill rejoue contre la stack Docker le parcours décrit dans `docs/api-contra
 
 ## 1. S'assurer que la stack tourne
 
-**Les commandes se lancent depuis le dépôt.** `docker compose` remonte les dossiers jusqu'au `compose.yaml` racine, donc tout sous-dossier convient. Le script `node .claude/skills/verify/e2e-auth.mjs`, lui, doit être lancé depuis la racine, car son chemin est relatif.
+**Se placer d'abord à la racine du dépôt** (le dossier renvoyé par `git rev-parse --show-toplevel`), puis lancer toutes les commandes de ce skill depuis là.
 
 ```powershell
 docker compose ps
@@ -22,8 +22,6 @@ docker compose up -d --build
 ```
 
 ## 2. Lancer le parcours
-
-Depuis la racine du dépôt :
 
 ```powershell
 node .claude/skills/verify/e2e-auth.mjs

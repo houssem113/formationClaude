@@ -6,7 +6,7 @@ Tout l'environnement de développement (base de données, mails, backend, fronte
 docker compose up -d --build
 ```
 
-Le `compose.yaml` de la racine se contente d'inclure [compose.yaml](compose.yaml) de ce dossier. Toutes les commandes `docker compose …` ci-dessous se lancent donc depuis la racine ou un sous-dossier du dépôt. La forme longue `docker compose -f docker/compose.yaml …` fonctionne aussi.
+Le `compose.yaml` de la racine se contente d'inclure [compose.yaml](compose.yaml) de ce dossier. Toutes les commandes `docker compose …` ci-dessous se lancent donc depuis la racine, `backend/` ou `frontend/`. Dans ce dossier `docker/`, c'est ce fichier qui est lu directement : on obtient la même stack, puisque les deux fichiers portent le même `name:`. L'`include` demande Docker Compose 2.20 ou plus. Avec une version plus ancienne, utiliser la forme longue `docker compose -f docker/compose.yaml …`, qui fonctionne partout.
 
 Prérequis : Docker Desktop démarré. Les ports 8000, 5173, 5433, 8025 et 1025 doivent être libres ; arrêter au besoin un `symfony serve` ou un `npm run dev` lancé à la main.
 

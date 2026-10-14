@@ -14,7 +14,8 @@ ainsi que la doc Swagger (`backend/src/OpenApi/AuthOpenApiFactory.php`).
 
 ## Lancer le projet (Docker)
 Une seule commande, depuis la racine : `docker compose up -d --build`
-(le `compose.yaml` racine inclut `docker/compose.yaml` ; les commandes `docker compose …` marchent depuis la racine ou un sous-dossier).
+(le `compose.yaml` racine inclut `docker/compose.yaml`, ce qui demande Docker Compose 2.20+ ; sinon `docker compose -f docker/compose.yaml …`).
+Les commandes `docker compose …` marchent depuis la racine, `backend/` ou `frontend/`. Dans `docker/`, c'est `docker/compose.yaml` qui est lu : même stack, grâce au même `name:`.
 Ne pas recréer de `compose*.yaml` dans `backend/` (`extra.symfony.docker: false` dans composer.json) : il masquerait celui de la racine
 - Frontend : http://localhost:5173 (utiliser `localhost`, pas `127.0.0.1` : cookie `SameSite=Strict`)
 - API + Swagger : http://localhost:8000/api

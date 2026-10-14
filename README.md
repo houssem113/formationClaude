@@ -38,7 +38,8 @@ Pour **lancer l'application**, rien d'autre à installer : PHP, Composer, Node e
 Pour **développer avec Claude Code**, le hook et le skill de vérification s'exécutent sur votre machine (voir [Développer avec Claude Code](#développer-avec-claude-code)). Il faut alors aussi :
 
 - [Node.js](https://nodejs.org/) 20 ou plus ;
-- [PHP](https://www.php.net/downloads) 8.2 et [Composer](https://getcomposer.org/), puis `composer install` dans `backend/` et `npm install` dans `frontend/`.
+- [PHP](https://www.php.net/downloads) 8.2, avec les extensions `pdo_sqlite` (les tests tournent sur SQLite), `openssl` et `mbstring` activées dans `php.ini` ;
+- [Composer](https://getcomposer.org/), puis `composer install` dans `backend/` et `npm install` dans `frontend/`.
 
 ### Installer et lancer
 
@@ -48,7 +49,7 @@ cd formationClaude
 docker compose up -d --build
 ```
 
-**C'est la seule commande à lancer.** Elle marche depuis la racine ou n'importe quel sous-dossier du dépôt : Docker Compose remonte jusqu'au `compose.yaml` racine. Forme équivalente, utilisable depuis n'importe où : `docker compose -f <chemin du dépôt>/docker/compose.yaml up -d --build`.
+**C'est la seule commande à lancer.** Elle marche depuis la racine ou un sous-dossier comme `backend/` ou `frontend/` : Docker Compose remonte jusqu'au `compose.yaml` racine. Seule exception : dans `docker/`, c'est `docker/compose.yaml` qui est lu directement, ce qui donne la même stack. Forme équivalente, utilisable depuis n'importe où : `docker compose -f <chemin du dépôt>/docker/compose.yaml up -d --build`.
 
 Le premier démarrage prend quelques minutes (téléchargement des images, `composer install`, `npm install`). Tout le reste est automatique :
 
@@ -102,9 +103,8 @@ docker compose exec backend php bin/console debug:router
 # Tests backend (PHPUnit, sur SQLite : ils ne touchent jamais la base de développement)
 docker compose exec backend php bin/phpunit
 
-# Lint et build du frontend
+# Lint du frontend
 docker compose exec frontend npm run lint
-docker compose exec frontend npm run build
 ```
 
 ## Dépannage

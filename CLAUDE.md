@@ -13,14 +13,16 @@ ainsi que la doc Swagger (`backend/src/OpenApi/AuthOpenApiFactory.php`).
   `npm run lint` + `npm run build`. Un échec bloque la fin de la réponse tant qu'il n'est pas corrigé (3 tentatives max)
 
 ## Lancer le projet (Docker)
-Une seule commande, depuis la racine : `docker compose -f docker/compose.yaml up -d --build`
+Une seule commande, depuis la racine : `docker compose up -d --build`
+(le `compose.yaml` racine inclut `docker/compose.yaml` ; les commandes `docker compose …` marchent depuis la racine ou un sous-dossier).
+Ne pas recréer de `compose*.yaml` dans `backend/` (`extra.symfony.docker: false` dans composer.json) : il masquerait celui de la racine
 - Frontend : http://localhost:5173 (utiliser `localhost`, pas `127.0.0.1` : cookie `SameSite=Strict`)
 - API + Swagger : http://localhost:8000/api
 - Mailpit (emails de dev) : http://localhost:8025. Par défaut, tous les emails y sont capturés et aucun ne sort ;
   pour un vrai envoi (Gmail), mettre `MAILER_DSN` et `MAILER_FROM` dans `backend/.env.local` (cf. docker/README.md)
 - PostgreSQL : `localhost:5433`, base/utilisateur/mot de passe `app`
 - Base, migrations, clés JWT et `.env.local` sont créés automatiquement au démarrage
-- Commandes backend dans le conteneur : `docker compose -f docker/compose.yaml exec backend php bin/console …`
+- Commandes backend dans le conteneur : `docker compose exec backend php bin/console …`
 - Tests : `php bin/phpunit` (en local ou dans le conteneur) ; ils utilisent SQLite et le mailer nul (`phpunit.dist.xml`)
 - Détails : docker/README.md
 

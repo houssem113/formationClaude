@@ -1,0 +1,10 @@
+# Raccourci : permet de lancer toute la stack depuis la racine avec `docker compose up -d --build`.
+# La définition complète est dans docker/compose.yaml (voir docker/README.md).
+
+# Nom fixé ici : celui de docker/compose.yaml est ignoré quand il est inclus. Sans lui, le projet
+# prendrait le nom du dossier du clone, et la forme longue `-f docker/compose.yaml` viserait un autre projet.
+# Doit rester identique au `name:` de docker/compose.yaml.
+name: formationclaude
+
+include:
+  - docker/compose.yaml

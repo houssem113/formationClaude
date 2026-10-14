@@ -173,7 +173,7 @@ async function main() {
 main().catch((error) => {
   if (!(error instanceof StepError)) {
     console.log(`\nErreur inattendue : ${error.cause?.code ?? ''} ${error.message}`)
-    console.log('La stack est-elle lancée ? docker compose -f docker/compose.yaml up -d --build')
+    console.log('La stack est-elle lancée ? docker compose up -d --build')
   } else {
     console.log('\nParcours en ÉCHEC.')
   }

@@ -9,14 +9,16 @@ Ce skill rejoue contre la stack Docker le parcours décrit dans `docs/api-contra
 
 ## 1. S'assurer que la stack tourne
 
+**Les commandes se lancent depuis le dépôt.** `docker compose` remonte les dossiers jusqu'au `compose.yaml` racine, donc tout sous-dossier convient. Le script `node .claude/skills/verify/e2e-auth.mjs`, lui, doit être lancé depuis la racine, car son chemin est relatif.
+
 ```powershell
-docker compose -f docker/compose.yaml ps
+docker compose ps
 ```
 
 Les services `backend`, `database`, `mailpit` et `frontend` doivent être `Up`, et `backend` doit être `healthy`. Sinon, lancer la stack et attendre que `backend` soit `healthy` :
 
 ```powershell
-docker compose -f docker/compose.yaml up -d --build
+docker compose up -d --build
 ```
 
 ## 2. Lancer le parcours
@@ -44,13 +46,13 @@ Code de sortie `0` : tout passe. Code `1` : le script s'arrête à la première 
 
 ## 3. Rendre compte
 
-Donner le résultat étape par étape (copier la sortie du script). En cas d'échec, citer l'étape, le statut et le code d'erreur reçus, puis chercher la cause : `docker compose -f docker/compose.yaml logs backend --tail 50`.
+Donner le résultat étape par étape (copier la sortie du script). En cas d'échec, citer l'étape, le statut et le code d'erreur reçus, puis chercher la cause : `docker compose logs backend --tail 50`.
 
 ## Causes d'échec connues
 
 - **Étape 1 en `429 TOO_MANY_REQUESTS`** : l'inscription est limitée à 3 par minute et par IP. Attendre une minute avant de relancer.
 - **Étape 3 : aucun email dans Mailpit** : un vrai service d'envoi (Gmail…) est sans doute configuré dans `backend/.env.local` (`MAILER_DSN`). Les emails ne passent alors plus par Mailpit.
-- **Étape 4 : la page frontend ne répond pas** : le conteneur `frontend` n'est pas démarré, ou Vite est encore en train de s'installer (`docker compose -f docker/compose.yaml logs frontend`).
+- **Étape 4 : la page frontend ne répond pas** : le conteneur `frontend` n'est pas démarré, ou Vite est encore en train de s'installer (`docker compose logs frontend`).
 - **« Erreur inattendue » avec `ECONNREFUSED`** : la stack n'est pas lancée.
 
 Variables optionnelles pour viser une autre adresse : `API_URL` (défaut `http://localhost:8000/api`) et `MAILPIT_URL` (défaut `http://localhost:8025`).
